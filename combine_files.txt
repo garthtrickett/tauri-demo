@@ -1,0 +1,32 @@
+#!/bin/bash
+# combine_files.sh
+# This script concatenates selected project files into one file,
+# with each section preceded by a header indicating the file name.
+
+# Output file
+OUTPUT="gpt"
+# Clear output file if it exists
+> "$OUTPUT"
+
+# List the files to include, in order.
+# Adjust the file paths based on your project structure.
+files=(
+  "src-tauri/src/main.rs"
+  "src/main.ts"
+  "index.html"
+  # Add any other files here...
+)
+
+# Loop through the list and append each file with a header.
+for file in "${files[@]}"; do
+  if [ -f "$file" ]; then
+    echo "===== $file =====" >> "$OUTPUT"
+    cat "$file" >> "$OUTPUT"
+    echo -e "\n\n" >> "$OUTPUT"
+  else
+    echo "Warning: File '$file' not found." >&2
+  fi
+done
+
+echo "All files have been combined into $OUTPUT"
+

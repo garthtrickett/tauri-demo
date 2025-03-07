@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Franken UI: Tauri App</title>
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <style>
+      :root {
+        font-family: Inter, sans-serif;
+        font-feature-settings:
+          "liga" 1,
+          "calt" 1; /* fix for Chrome */
+      }
+      @supports (font-variation-settings: normal) {
+        :root {
+          font-family: InterVariable, sans-serif;
+        }
+      }
+      /* Spinner overlay styles */
+      .spinner-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .spinner {
+        border: 16px solid rgba(243, 243, 243, 0.2); /* light semi-transparent */
+        border-top: 16px solid #fff; /* white */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/franken-ui@internal/dist/css/core.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/franken-ui@internal/dist/css/utilities.min.css"
+    />
+    <script>
+      const htmlElement = document.documentElement;
+      const __FRANKEN__ = JSON.parse(
+        localStorage.getItem("__FRANKEN__") || "{}",
+      );
+      if (
+        __FRANKEN__.mode === "dark" ||
+        (!__FRANKEN__.mode &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        htmlElement.classList.add("dark");
+      } else {
+        htmlElement.classList.remove("dark");
+      }
+      htmlElement.classList.add(__FRANKEN__.theme || "uk-theme-zinc");
+      htmlElement.classList.add(__FRANKEN__.radii || "uk-radii-md");
+      htmlElement.classList.add(__FRANKEN__.shadows || "uk-shadows-sm");
+      htmlElement.classList.add(__FRANKEN__.font || "uk-font-sm");
+      htmlElement.classList.add(__FRANKEN__.chart || "uk-chart-default");
+    </script>
+    <script
+      type="module"
+      src="https://unpkg.com/franken-ui@internal/dist/js/core.iife.js"
+    ></script>
+    <script
+      type="module"
+      src="https://unpkg.com/franken-ui@internal/dist/js/icon.iife.js"
+    ></script>
+  </head>
+  <body class="bg-background text-foreground">
+    <!-- Spinner overlay shown while app loads -->
+    <div id="spinner" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
