@@ -18,6 +18,10 @@
           font-family: InterVariable, sans-serif;
         }
       }
+      /* Ensure the body has a white background initially */
+      body {
+        background-color: #fff;
+      }
       /* Spinner overlay styles */
       .spinner-overlay {
         position: fixed;
@@ -25,7 +29,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #000;
+        background-color: rgba(0, 0, 0, 0.8); /* semi-transparent black */
         display: flex;
         justify-content: center;
         align-items: center;
