@@ -15,7 +15,7 @@ Before you begin, ensure you have the following installed:
 To clone the repository, run the following command:
 
 ```bash
-git clone https://github.com/your-username/tauri-demo.git
+git clone https://github.com/garthtrickett/tauri-demo.git
 cd tauri-demo
 ````
 
