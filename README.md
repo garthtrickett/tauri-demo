@@ -15,8 +15,8 @@ Before you begin, ensure you have the following installed:
 To clone the repository, run the following command:
 
 ```bash
-git clone https://github.com/your-username/tauri-counter-app.git
-cd tauri-counter-app
+git clone https://github.com/your-username/tauri-demo.git
+cd tauri-demo
 ````
 
 ## Installing Dependencies
