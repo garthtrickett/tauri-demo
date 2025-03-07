@@ -40,9 +40,12 @@ impl SAMManager {
     self.reactor = Some(Box::new(reactor));
   }
 
-  /// Applies the given action to update the state and emits the update.
-  /// It then calls the special trigger handler.
+  /// Applies the given action to update the state, emits the update, and then
+  /// calls the special trigger handler with the previous count.
   pub fn apply(&mut self, action: Action) {
+    // Capture the previous count.
+    let old_count = self.state.count;
+
     // Update state based on the action.
     match action {
       Action::DecrementCounter => {
@@ -62,23 +65,30 @@ impl SAMManager {
     // Emit the updated state.
     let _ = self.app_handle.emit("state_updated", self.state.clone());
 
-    // Handle any special triggers based on the counter value.
-    self.handle_api_triggers();
+    // Handle any special triggers based on the counter value and previous count.
+    self.handle_api_triggers(old_count);
   }
 
   /// Checks the counter and triggers API calls when necessary.
-  fn handle_api_triggers(&mut self) {
+  /// For the count 0 trigger, it only activates if the previous count was greater than 0.
+  /// For the count 5 trigger, it activates only if the previous count was not 5.
+  fn handle_api_triggers(&mut self, old_count: i32) {
     match self.state.count {
       0 => {
-        self.state.title = "API call in progress...".to_string();
-        let _ = self.app_handle.emit("state_updated", self.state.clone());
-        if let Some(ref reactor) = self.reactor {
-          reactor();
+        if old_count > 0 {
+          // Trigger the API call only when transitioning from >0 to 0.
+          self.state.title = "API call in progress...".to_string();
+          let _ = self.app_handle.emit("state_updated", self.state.clone());
+          if let Some(ref reactor) = self.reactor {
+            reactor();
+          }
         }
       }
       5 => {
-        self.state.title = "Counter reached 5! second trigger activated.".to_string();
-        let _ = self.app_handle.emit("state_updated", self.state.clone());
+        if old_count != 5 {
+          self.state.title = "Counter reached 5! second trigger activated.".to_string();
+          let _ = self.app_handle.emit("state_updated", self.state.clone());
+        }
       }
       _ => {}
     }

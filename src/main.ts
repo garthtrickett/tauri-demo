@@ -14,8 +14,12 @@ const root: HTMLElement =
 
 // Renders the UI using lit-html with Franken UI styling.
 const renderApp = (): TemplateResult => {
-  // Disable buttons if the title indicates an API call is in progress.
+  // Disable buttons if an API call is in progress.
   const isDisabled = state.title === "API call in progress...";
+  // Disable decrement when count is 0.
+  const decrementDisabled = state.count === 0;
+  // Disable increment when count is 5.
+  const incrementDisabled = state.count === 5;
   return html`
     <div class="uk-container mt-40">
       <div class="space-y-4">
@@ -29,10 +33,9 @@ const renderApp = (): TemplateResult => {
               <div style="max-width: 600px; margin: 0 auto; padding-top: 1rem;">
                 <p class="text-center">
                   Note: When the countdown hits zero, the backend will trigger
-                  an mock external API call, displaying "API call in
-                  progress..." followed by a final message. Also, when
-                  incrementing the counter to five, a different trigger will
-                  activate.
+                  an external API call, displaying "API call in progress..."
+                  followed by a final message. Also, when incrementing the
+                  counter to five, a different trigger will activate.
                 </p>
               </div>
             `
@@ -40,14 +43,14 @@ const renderApp = (): TemplateResult => {
         <div class="flex justify-center gap-x-2">
           <button
             class="uk-btn uk-btn-default"
-            ?disabled=${isDisabled}
+            ?disabled=${decrementDisabled || isDisabled}
             @click=${() => actions.decrementCounter()}
           >
             Decrement
           </button>
           <button
             class="uk-btn uk-btn-default"
-            ?disabled=${isDisabled}
+            ?disabled=${incrementDisabled || isDisabled}
             @click=${() => actions.incrementCounter()}
           >
             Increment

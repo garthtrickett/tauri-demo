@@ -26,7 +26,7 @@ cd tauri-counter-app
 The frontend dependencies are managed by Node.js. To install them, run:
 
 ```bash
-npm install # (pnpm is faster if you have it )
+npm install 
 ```
 
 ### Backend Dependencies
@@ -38,7 +38,7 @@ The backend dependencies are managed by Cargo (Rust's package manager). They wil
 To run the application, use the following command:
 
 ```bash
-npm tauri dev (pnpm is faster if you have it )
+npm run tauri dev
 ```
 
 This will start the Tauri development server, compile the Rust backend, and launch the application.
